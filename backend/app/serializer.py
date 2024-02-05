@@ -33,15 +33,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 class FreelancerRegistrationSerializer(serializers.ModelSerializer):
-    user = UserRegistrationSerializer()
-
     class Meta:
         model = Freelancer
         fields = '__all__'
 
 class SellerRegistrationSerializer(serializers.ModelSerializer):
-    user = UserRegistrationSerializer()
-
     class Meta:
         model = Seller
         fields = '__all__'

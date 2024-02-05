@@ -24,6 +24,12 @@ def user_login(request):
 
     return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
+class UserLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        return user_login(request)
+    
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
@@ -54,11 +60,7 @@ class SellerProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return Seller.objects.get(user=self.request.user)
 
-class UserLoginView(APIView):
-    permission_classes = [AllowAny]
 
-    def post(self, request, *args, **kwargs):
-        return user_login(request)
 
 
 #blog_category
