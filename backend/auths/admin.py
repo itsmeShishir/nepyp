@@ -5,7 +5,7 @@ from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ['email', 'username', 'phone', 'role', 'is_active', 'is_staff', 'get_date_joined']
+    list_display = ['email', 'username', 'phone', 'role', 'is_active', 'is_staff', 'password']
     fieldsets = (
         (None, {'fields': ('email', 'username', 'phone', 'role', 'password')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
@@ -19,10 +19,6 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ['email', 'username']
     ordering = ['email']
 
-    def get_date_joined(self, obj):
-        return obj.date_joined
-
-    get_date_joined.short_description = 'Date Joined'
 
 admin.site.register(CustomUser, CustomUserAdmin)
 

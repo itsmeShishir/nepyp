@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from auths.models import CustomUser
 from  cloudinary.models import CloudinaryField
 
 #Blog Category 
@@ -22,6 +23,7 @@ class CategoryBlog(models.Model):
 #Blog 
 class Blog(models.Model):
     title = models.CharField(max_length=255)
+    username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     category_name = models.ForeignKey(CategoryBlog, on_delete=models.CASCADE)
     description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)

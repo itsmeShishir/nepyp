@@ -30,6 +30,34 @@ class UserLoginView(APIView):
     def post(self, request, *args, **kwargs):
         return user_login(request)
     
+
+class CustomLoginView(APIView):
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        print(f"Attempting login for email: {email}")
+
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key}, status=status.HTTP_200_OK)
+        else:
+            print(f"Login failed for email: {email}, password: {password}")
+
+            # Check if the user with the provided email exists
+            existing_user = CustomUser.objects.filter(email=email).first()
+
+            if existing_user is None:
+                # User with the provided email does not exist
+                return Response({'detail': 'Email does not match'}, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                # User with the provided email exists, but the password does not match
+                return Response({'detail': 'Password does not match'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
